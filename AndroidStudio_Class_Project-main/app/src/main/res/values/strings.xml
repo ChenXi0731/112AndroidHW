@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">我不是新來的</string>
+    <string name="value">0</string>
+    <string name="incrsement">加一</string>
+    <string name="decrsement">減一</string>
+    <string name="reset">歸零</string>
+</resources>
