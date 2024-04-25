@@ -2,8 +2,8 @@
     <string name="app_name">MidternHomeWork</string>
     <string name="male">男性</string>
     <string name="female">女性</string>
-    <string name="adult">成人</string>
-    <string name="child">孩童</string>
-    <string name="student">學生</string>
+    <string name="adult">成人\n(NT 500)</string>
+    <string name="child">孩童\n(NT 250)</string>
+    <string name="student">學生\n(NT 400)</string>
     <string name="output_format">%s\n%s票\n%d張\n總價: %d元</string>
 </resources>

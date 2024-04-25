@@ -1,9 +1,13 @@
 package com.example.midternhomework;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private TextView output;
     private EditText txt;
     private RadioGroup rg, rgType;
+    private Button btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,79 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         txt = findViewById(R.id.txtName);
         txt.addTextChangedListener(this);
+
+        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showResult();
+            }
+        });
+    }
+
+    private void showResult() {
+        int genderId = rg.getCheckedRadioButtonId();
+        int typeId = rgType.getCheckedRadioButtonId();
+        String name = txt.getText().toString().trim();
+
+        StringBuilder result = new StringBuilder();
+
+        // 處理性別選項
+        RadioButton boy = findViewById(R.id.rdbBoy);
+        RadioButton girl = findViewById(R.id.rdbGirl);
+        result.append("性別: ");
+        if (genderId == R.id.rdbBoy) {
+            result.append(boy.getText()).append("\n");
+        } else if (genderId == R.id.rdbGirl) {
+            result.append(girl.getText()).append("\n");
+        }
+
+        // 處理票種選項
+        if (typeId != -1) {
+            RadioButton adult = findViewById(R.id.rdbAdult);
+            RadioButton child = findViewById(R.id.rdbChild);
+            RadioButton student = findViewById(R.id.rdbStudent);
+            result.append("票種: ");
+            if (typeId == R.id.rdbAdult) {
+                result.append(adult.getText()).append("\n");
+            } else if (typeId == R.id.rdbChild) {
+                result.append(child.getText()).append("\n");
+            } else if (typeId == R.id.rdbStudent) {
+                result.append(student.getText()).append("\n");
+            }
+        }
+
+        // 處理票數和金額
+        if (!name.isEmpty()) {
+            try {
+                int num = Integer.parseInt(name);
+                int price = getPrice(typeId);
+                int sum = price * num;
+                result.append("票數: ").append(num).append("張\n");
+                result.append("總價: ").append(sum);
+            } catch (NumberFormatException e) {
+                result.append("票數無效");
+            }
+        } else {
+            result.append("請輸入票數");
+        }
+
+        // 啟動新的 Activity 顯示結果
+        Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+        intent.putExtra("result", result.toString());
+        startActivity(intent);
+    }
+
+    private int getPrice(int typeId) {
+        int price = 0;
+        if (typeId == R.id.rdbAdult) {
+            price = 500;
+        } else if (typeId == R.id.rdbChild) {
+            price = 250;
+        } else if (typeId == R.id.rdbStudent) {
+            price = 400;
+        }
+        return price;
     }
 
     @Override
